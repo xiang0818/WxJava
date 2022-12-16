@@ -7,17 +7,20 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.w3c.dom.Document;
 
+import java.io.Serializable;
+
 /**
  * 红包发送记录查询返回
  *
  * @author wuyong
- * @date 2019-12-01 17:23
+ * created on  2019-12-01 17:23
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @XStreamAlias("xml")
-public class EntPayRedpackQueryResult extends BaseWxPayResult {
+public class EntPayRedpackQueryResult extends BaseWxPayResult implements Serializable {
+  private static final long serialVersionUID = 3127509905347445197L;
 
   /**
    * 商户订单号
@@ -63,7 +66,7 @@ public class EntPayRedpackQueryResult extends BaseWxPayResult {
    * 发送失败原因
    */
   @XStreamAlias("reason")
-  private Integer reason;
+  private String reason;
 
   /**
    * 红包发送时间
@@ -116,39 +119,39 @@ public class EntPayRedpackQueryResult extends BaseWxPayResult {
    * 接收时间
    */
   @XStreamAlias("rcv_time")
-  private Integer rcvTime;
+  private String rcvTime;
 
   /**
    * 发送者名称
    */
   @XStreamAlias("sender_name")
-  private Integer senderName;
+  private String senderName;
 
   /**
    * 发送者头像
    * 通过企业微信开放接口上传获取
    */
   @XStreamAlias("sender_header_media_id")
-  private Integer senderHeaderMediaId;
+  private String senderHeaderMediaId;
 
   @Override
-  protected void loadXML(Document d) {
-    mchBillNo = readXMLString(d, "mch_billno");
-    detailId = readXMLString(d, "detailId");
-    status = readXMLString(d, "status");
-    sendType = readXMLString(d, "send_type");
-    totalAmount = readXMLInteger(d, "total_amount");
-    reason = readXMLInteger(d, "reason");
-    sendTime = readXMLString(d, "send_time");
-    refundTime = readXMLString(d, "refund_time");
-    refundAmount = readXMLInteger(d, "refund_amount");
-    wishing = readXMLString(d, "wishing");
-    remark = readXMLString(d, "remark");
-    actName = readXMLString(d, "act_name");
-    openid = readXMLString(d, "openid");
-    amount = readXMLInteger(d, "amount");
-    rcvTime = readXMLInteger(d, "rcv_time");
-    senderName = readXMLInteger(d, "sender_name");
-    senderHeaderMediaId = readXMLInteger(d, "sender_header_media_id");
+  protected void loadXml(Document d) {
+    mchBillNo = readXmlString(d, "mch_billno");
+    detailId = readXmlString(d, "detailId");
+    status = readXmlString(d, "status");
+    sendType = readXmlString(d, "send_type");
+    totalAmount = readXmlInteger(d, "total_amount");
+    reason = readXmlString(d, "reason");
+    sendTime = readXmlString(d, "send_time");
+    refundTime = readXmlString(d, "refund_time");
+    refundAmount = readXmlInteger(d, "refund_amount");
+    wishing = readXmlString(d, "wishing");
+    remark = readXmlString(d, "remark");
+    actName = readXmlString(d, "act_name");
+    openid = readXmlString(d, "openid");
+    amount = readXmlInteger(d, "amount");
+    rcvTime = readXmlString(d, "rcv_time");
+    senderName = readXmlString(d, "sender_name");
+    senderHeaderMediaId = readXmlString(d, "sender_header_media_id");
   }
 }

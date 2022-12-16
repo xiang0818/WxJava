@@ -1,8 +1,11 @@
 package cn.binarywang.wx.miniapp.bean.code;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -14,8 +17,21 @@ import java.io.Serializable;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
 public class WxMaCategory implements Serializable {
   private static final long serialVersionUID = -7663757440028175135L;
+
+  /**
+   * 小程序的页面，可通过“获取小程序的第三方提交代码的页面配置”接口获得
+   */
+  private String address;
+  /**
+   * 小程序的标签，多个标签用空格分隔，标签不能多于10个，标签长度不超过20
+   */
+  private String tag;
+
   /**
    * 一级类目名称
    */
@@ -47,14 +63,6 @@ public class WxMaCategory implements Serializable {
   @SerializedName("third_id")
   private Long thirdId;
 
-  /**
-   * 小程序的页面，可通过“获取小程序的第三方提交代码的页面配置”接口获得
-   */
-  private String address;
-  /**
-   * 小程序的标签，多个标签用空格分隔，标签不能多于10个，标签长度不超过20
-   */
-  private String tag;
   /**
    * 小程序页面的标题,标题长度不超过32
    */

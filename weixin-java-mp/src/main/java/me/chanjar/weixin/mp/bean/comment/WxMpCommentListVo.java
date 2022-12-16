@@ -2,8 +2,6 @@ package me.chanjar.weixin.mp.bean.comment;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
-import me.chanjar.weixin.common.util.xml.IntegerArrayConverter;
-import me.chanjar.weixin.mp.bean.device.WxDeviceQrCodeResult;
 import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
 
 import java.io.Serializable;
@@ -13,7 +11,7 @@ import java.util.List;
  * 群发图文评论数据.
  *
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
- * @date 2019-08-30
+ * created on  2019-08-30
  */
 @Data
 public class WxMpCommentListVo implements Serializable {

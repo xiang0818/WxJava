@@ -1,31 +1,35 @@
 package me.chanjar.weixin.cp.demo;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-
+import me.chanjar.weixin.cp.api.WxCpService;
+import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
+import me.chanjar.weixin.cp.bean.message.WxCpXmlOutMessage;
+import me.chanjar.weixin.cp.bean.message.WxCpXmlOutTextMessage;
+import me.chanjar.weixin.cp.config.WxCpConfigStorage;
+import me.chanjar.weixin.cp.constant.WxCpConsts;
+import me.chanjar.weixin.cp.message.WxCpMessageHandler;
+import me.chanjar.weixin.cp.message.WxCpMessageRouter;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.common.session.WxSessionManager;
-import me.chanjar.weixin.cp.constant.WxCpConsts;
-import me.chanjar.weixin.cp.api.WxCpService;
-import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
-import me.chanjar.weixin.cp.bean.WxCpXmlMessage;
-import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
-import me.chanjar.weixin.cp.bean.WxCpXmlOutTextMessage;
-import me.chanjar.weixin.cp.config.WxCpConfigStorage;
-import me.chanjar.weixin.cp.message.WxCpMessageHandler;
-import me.chanjar.weixin.cp.message.WxCpMessageRouter;
+import java.io.IOException;
+import java.io.InputStream;
 
+/**
+ * The type Wx cp demo server.
+ */
 public class WxCpDemoServer {
 
   private static WxCpConfigStorage wxCpConfigStorage;
   private static WxCpService wxCpService;
   private static WxCpMessageRouter wxCpMessageRouter;
 
+  /**
+   * The entry point of application.
+   *
+   * @param args the input arguments
+   * @throws Exception the exception
+   */
   public static void main(String[] args) throws Exception {
     initWeixin();
 
@@ -34,7 +38,8 @@ public class WxCpDemoServer {
     ServletHandler servletHandler = new ServletHandler();
     server.setHandler(servletHandler);
 
-    ServletHolder endpointServletHolder = new ServletHolder(new WxCpEndpointServlet(wxCpConfigStorage, wxCpService, wxCpMessageRouter));
+    ServletHolder endpointServletHolder = new ServletHolder(new WxCpEndpointServlet(wxCpConfigStorage, wxCpService,
+      wxCpMessageRouter));
     servletHandler.addServletWithMapping(endpointServletHolder, "/*");
 
     ServletHolder oauthServletHolder = new ServletHolder(new WxCpOAuth2Servlet(wxCpService));
@@ -54,30 +59,20 @@ public class WxCpDemoServer {
       wxCpService = new WxCpServiceImpl();
       wxCpService.setWxCpConfigStorage(config);
 
-      WxCpMessageHandler handler = new WxCpMessageHandler() {
-        @Override
-        public WxCpXmlOutMessage handle(WxCpXmlMessage wxMessage,
-                                        Map<String, Object> context, WxCpService wxService,
-                                        WxSessionManager sessionManager) {
-          WxCpXmlOutTextMessage m = WxCpXmlOutMessage.TEXT().content("测试加密消息")
-            .fromUser(wxMessage.getToUserName())
-            .toUser(wxMessage.getFromUserName()).build();
-          return m;
-        }
+      WxCpMessageHandler handler = (wxMessage, context, wxService, sessionManager) -> {
+        WxCpXmlOutTextMessage m = WxCpXmlOutMessage.TEXT().content("测试加密消息")
+          .fromUser(wxMessage.getToUserName())
+          .toUser(wxMessage.getFromUserName()).build();
+        return m;
       };
 
-      WxCpMessageHandler oauth2handler = new WxCpMessageHandler() {
-        @Override
-        public WxCpXmlOutMessage handle(WxCpXmlMessage wxMessage,
-                                        Map<String, Object> context, WxCpService wxService,
-                                        WxSessionManager sessionManager) {
-          String href = "<a href=\""
-            + wxService.getOauth2Service().buildAuthorizationUrl(wxCpConfigStorage.getOauth2redirectUri(), null)
-            + "\">测试oauth2</a>";
-          return WxCpXmlOutMessage.TEXT().content(href)
-            .fromUser(wxMessage.getToUserName())
-            .toUser(wxMessage.getFromUserName()).build();
-        }
+      WxCpMessageHandler oauth2handler = (wxMessage, context, wxService, sessionManager) -> {
+        String href = "<a href=\""
+          + wxService.getOauth2Service().buildAuthorizationUrl(wxCpConfigStorage.getOauth2redirectUri(), null)
+          + "\">测试oauth2</a>";
+        return WxCpXmlOutMessage.TEXT().content(href)
+          .fromUser(wxMessage.getToUserName())
+          .toUser(wxMessage.getFromUserName()).build();
       };
 
       wxCpMessageRouter = new WxCpMessageRouter(wxCpService);
@@ -93,12 +88,9 @@ public class WxCpDemoServer {
         .end()
         .rule()
         .event(WxCpConsts.EventType.CHANGE_CONTACT)
-        .handler(new WxCpMessageHandler() {
-          @Override
-          public WxCpXmlOutMessage handle(WxCpXmlMessage wxMessage, Map<String, Object> context, WxCpService wxCpService, WxSessionManager sessionManager) throws WxErrorException {
-            System.out.println("通讯录发生变更");
-            return null;
-          }
+        .handler((wxMessage, context, wxCpService, sessionManager) -> {
+          System.out.println("通讯录发生变更");
+          return null;
         })
         .end();
 

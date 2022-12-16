@@ -1,23 +1,35 @@
 package me.chanjar.weixin.open.api.impl;
 
+import cn.binarywang.wx.miniapp.json.WxMaGsonBuilder;
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonObject;
+import lombok.SneakyThrows;
 import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.mp.config.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
-import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import me.chanjar.weixin.mp.config.WxMpConfigStorage;
 import me.chanjar.weixin.open.api.WxOpenComponentService;
+import me.chanjar.weixin.open.api.WxOpenMpService;
+import me.chanjar.weixin.open.bean.mp.FastRegisterResult;
+import me.chanjar.weixin.open.bean.result.WxAmpLinkResult;
+import me.chanjar.weixin.open.bean.result.WxOpenResult;
+
+import java.net.URLEncoder;
+import java.util.Objects;
 
 /**
  * @author <a href="https://github.com/007gzs">007</a>
  */
-public class WxOpenMpServiceImpl extends WxMpServiceImpl {
+public class WxOpenMpServiceImpl extends WxMpServiceImpl implements WxOpenMpService {
   private WxOpenComponentService wxOpenComponentService;
   private WxMpConfigStorage wxMpConfigStorage;
   private String appId;
 
   public WxOpenMpServiceImpl(WxOpenComponentService wxOpenComponentService, String appId, WxMpConfigStorage wxMpConfigStorage) {
+//    wxOpenComponentService.oauth2getAccessToken(appId)
     this.wxOpenComponentService = wxOpenComponentService;
     this.appId = appId;
     this.wxMpConfigStorage = wxMpConfigStorage;
+    setOAuth2Service(new WxOpenMpOAuth2ServiceImpl(wxOpenComponentService, getOAuth2Service(), wxMpConfigStorage));
     initHttp();
   }
 
@@ -31,18 +43,44 @@ public class WxOpenMpServiceImpl extends WxMpServiceImpl {
     return wxOpenComponentService.getAuthorizerAccessToken(appId, forceRefresh);
   }
 
+  @SneakyThrows
   @Override
-  public WxMpOAuth2AccessToken oauth2getAccessToken(String code) throws WxErrorException {
-    return wxOpenComponentService.oauth2getAccessToken(appId, code);
+  public String getFastRegisterAuthUrl(String redirectUri, Boolean copyWxVerify) {
+    String copyInfo = Objects.equals(copyWxVerify, false) ? "0" : "1";
+    String componentAppId = wxOpenComponentService.getWxOpenConfigStorage().getComponentAppId();
+    String encoded = URLEncoder.encode(redirectUri, "UTF-8");
+    return String.format(URL_FAST_REGISTER_AUTH, appId, componentAppId, copyInfo, encoded);
   }
 
   @Override
-  public WxMpOAuth2AccessToken oauth2refreshAccessToken(String refreshToken) throws WxErrorException {
-    return wxOpenComponentService.oauth2refreshAccessToken(appId, refreshToken);
+  public FastRegisterResult fastRegister(String ticket) throws WxErrorException {
+    String json = post(API_FAST_REGISTER, ImmutableMap.of("ticket", ticket));
+    return FastRegisterResult.fromJson(json);
+  }
+
+
+  @Override
+  public WxAmpLinkResult getWxAmpLink() throws WxErrorException {
+    String response = post(API_WX_AMP_LINK_GET, "{}");
+    return WxMaGsonBuilder.create().fromJson(response, WxAmpLinkResult.class);
   }
 
   @Override
-  public String oauth2buildAuthorizationUrl(String redirectURI, String scope, String state) {
-    return wxOpenComponentService.oauth2buildAuthorizationUrl(appId, redirectURI, scope, state);
+  public WxOpenResult wxAmpLink(String appid, String notifyUsers, String showProfile) throws WxErrorException {
+    JsonObject params = new JsonObject();
+    params.addProperty("appid", appid);
+    params.addProperty("notify_users", notifyUsers);
+    params.addProperty("show_profile", showProfile);
+    String response = post(API_WX_AMP_LINK_CREATE, params.toString());
+    return WxMaGsonBuilder.create().fromJson(response, WxOpenResult.class);
   }
+
+  @Override
+  public WxOpenResult wxAmpUnLink(String appid) throws WxErrorException {
+    JsonObject params = new JsonObject();
+    params.addProperty("appid", appid);
+    String response = post(API_WX_AMP_LINK_UN, params.toString());
+    return WxMaGsonBuilder.create().fromJson(response, WxOpenResult.class);
+  }
+
 }

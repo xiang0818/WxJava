@@ -2,7 +2,7 @@ package cn.binarywang.wx.miniapp.bean;
 
 import java.io.Serializable;
 
-import cn.binarywang.wx.miniapp.util.json.WxMaGsonBuilder;
+import cn.binarywang.wx.miniapp.json.WxMaGsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +10,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import static cn.binarywang.wx.miniapp.constant.WxMaConstants.DEFAULT_ENV_VERSION;
+
 /**
  * 小程序码.
  *
  * @author Element
- * @date 2017/7/27
+ * created on  2017/7/27
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -25,6 +27,9 @@ public class WxaCode extends AbstractWxMaQrcodeWrapper implements Serializable {
   private static final long serialVersionUID = 1287399621649210322L;
 
   private String path;
+
+  @SerializedName("env_version")
+  private String envVersion = DEFAULT_ENV_VERSION;
 
   @Builder.Default
   private int width = 430;

@@ -14,23 +14,6 @@ import java.util.List;
  */
 public interface WxMaCodeService {
   /**
-   * 为授权的小程序帐号上传小程序代码.
-   */
-  String COMMIT_URL = "https://api.weixin.qq.com/wxa/commit";
-  String GET_QRCODE_URL = "https://api.weixin.qq.com/wxa/get_qrcode";
-  String GET_CATEGORY_URL = "https://api.weixin.qq.com/wxa/get_category";
-  String GET_PAGE_URL = "https://api.weixin.qq.com/wxa/get_page";
-  String SUBMIT_AUDIT_URL = "https://api.weixin.qq.com/wxa/submit_audit";
-  String GET_AUDIT_STATUS_URL = "https://api.weixin.qq.com/wxa/get_auditstatus";
-  String GET_LATEST_AUDIT_STATUS_URL = "https://api.weixin.qq.com/wxa/get_latest_auditstatus";
-  String RELEASE_URL = "https://api.weixin.qq.com/wxa/release";
-  String CHANGE_VISIT_STATUS_URL = "https://api.weixin.qq.com/wxa/change_visitstatus";
-  String REVERT_CODE_RELEASE_URL = "https://api.weixin.qq.com/wxa/revertcoderelease";
-  String GET_SUPPORT_VERSION_URL = "https://api.weixin.qq.com/cgi-bin/wxopen/getweappsupportversion";
-  String SET_SUPPORT_VERSION_URL = "https://api.weixin.qq.com/cgi-bin/wxopen/setweappsupportversion";
-  String UNDO_CODE_AUDIT_URL = "https://api.weixin.qq.com/wxa/undocodeaudit";
-
-  /**
    * 为授权的小程序帐号上传小程序代码（仅仅支持第三方开放平台）.
    *
    * @param commitRequest 参数
@@ -121,6 +104,14 @@ public interface WxMaCodeService {
    * @throws WxErrorException 失败时抛出，具体错误码请看此接口的注释文档
    */
   WxMaCodeVersionDistribution getSupportVersion() throws WxErrorException;
+
+  /**
+   * 查询小程序版本信息
+   *
+   * @return 小程序的体验版和线上版本信息
+   * @throws WxErrorException 失败时抛出，具体错误码请看此接口的注释文档
+   */
+  WxMaCodeVersionInfo getVersionInfo() throws WxErrorException;
 
   /**
    * 设置最低基础库版本（仅供第三方代小程序调用）.

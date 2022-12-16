@@ -2,6 +2,7 @@ package me.chanjar.weixin.mp.util.json;
 
 import com.google.gson.*;
 import me.chanjar.weixin.common.api.WxConsts.KefuMsgType;
+import me.chanjar.weixin.common.error.WxRuntimeException;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import org.apache.commons.lang3.StringUtils;
 
@@ -95,8 +96,13 @@ public class WxMpKefuMessageGsonAdapter implements JsonSerializer<WxMpKefuMessag
           messageJson.add("msgmenu", msgmenuJsonObject);
         break;
       }
+      case KefuMsgType.MP_NEWS_ARTICLE:
+        JsonObject mpNewsArticleJson = new JsonObject();
+        mpNewsArticleJson.addProperty("article_id", message.getMpNewsArticleId());
+        messageJson.add("mpnewsarticle", mpNewsArticleJson);
+        break;
       default: {
-        throw new RuntimeException("非法消息类型，暂不支持");
+        throw new WxRuntimeException("非法消息类型，暂不支持");
       }
     }
 

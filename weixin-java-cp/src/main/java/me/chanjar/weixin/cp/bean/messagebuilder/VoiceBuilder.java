@@ -1,7 +1,7 @@
 package me.chanjar.weixin.cp.bean.messagebuilder;
 
 import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.cp.bean.WxCpMessage;
+import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 
 /**
  * 语音消息builder
@@ -14,10 +14,19 @@ import me.chanjar.weixin.cp.bean.WxCpMessage;
 public final class VoiceBuilder extends BaseBuilder<VoiceBuilder> {
   private String mediaId;
 
+  /**
+   * Instantiates a new Voice builder.
+   */
   public VoiceBuilder() {
     this.msgType = WxConsts.KefuMsgType.VOICE;
   }
 
+  /**
+   * Media id voice builder.
+   *
+   * @param media_id the media id
+   * @return the voice builder
+   */
   public VoiceBuilder mediaId(String media_id) {
     this.mediaId = media_id;
     return this;

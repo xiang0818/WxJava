@@ -1,6 +1,6 @@
 package me.chanjar.weixin.common.util.http.apache;
 
-import me.chanjar.weixin.common.WxType;
+import me.chanjar.weixin.common.enums.WxType;
 import me.chanjar.weixin.common.error.WxError;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.util.fs.FileUtils;
@@ -25,7 +25,7 @@ import java.io.InputStream;
  * .
  *
  * @author ecoolper
- * @date 2017/5/5
+ * created on  2017/5/5
  */
 public class ApacheMediaDownloadRequestExecutor extends BaseMediaDownloadRequestExecutor<CloseableHttpClient, HttpHost> {
   public ApacheMediaDownloadRequestExecutor(RequestHttp requestHttp, File tmpDirFile) {
@@ -63,7 +63,12 @@ public class ApacheMediaDownloadRequestExecutor extends BaseMediaDownloadRequest
         fileName = String.valueOf(System.currentTimeMillis());
       }
 
-      return FileUtils.createTmpFile(inputStream, FilenameUtils.getBaseName(fileName), FilenameUtils.getExtension(fileName),
+      String baseName = FilenameUtils.getBaseName(fileName);
+      if (StringUtils.isBlank(fileName) || baseName.length() < 3) {
+        baseName = String.valueOf(System.currentTimeMillis());
+      }
+
+      return FileUtils.createTmpFile(inputStream, baseName, FilenameUtils.getExtension(fileName),
         super.tmpDirFile);
 
     } finally {

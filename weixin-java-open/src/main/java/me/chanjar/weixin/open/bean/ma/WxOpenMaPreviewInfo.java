@@ -3,12 +3,10 @@ package me.chanjar.weixin.open.bean.ma;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * @author zxfreedom
  * @description
- * @date 2019/12/30
+ * created on  2019/12/30
  */
 @Data
 public class WxOpenMaPreviewInfo {

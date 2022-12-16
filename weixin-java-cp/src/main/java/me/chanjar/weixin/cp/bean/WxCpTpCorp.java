@@ -1,11 +1,10 @@
 package me.chanjar.weixin.cp.bean;
 
-import java.io.Serializable;
-
 import com.google.gson.annotations.SerializedName;
-
 import lombok.Data;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
+
+import java.io.Serializable;
 
 /**
  * 微信部门.
@@ -30,11 +29,24 @@ public class WxCpTpCorp implements Serializable {
   private String corpUserMax;
   @SerializedName("permanent_code")
   private String permanentCode;
-  
+  @SerializedName("auth_info")
+  private String authInfo;
+
+  /**
+   * From json wx cp tp corp.
+   *
+   * @param json the json
+   * @return the wx cp tp corp
+   */
   public static WxCpTpCorp fromJson(String json) {
     return WxCpGsonBuilder.create().fromJson(json, WxCpTpCorp.class);
   }
 
+  /**
+   * To json string.
+   *
+   * @return the string
+   */
   public String toJson() {
     return WxCpGsonBuilder.create().toJson(this);
   }

@@ -1,23 +1,18 @@
 package cn.binarywang.wx.miniapp.api;
 
-import cn.binarywang.wx.miniapp.bean.*;
+import cn.binarywang.wx.miniapp.bean.WxMaKefuMessage;
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
+import cn.binarywang.wx.miniapp.bean.WxMaUniformMessage;
+import cn.binarywang.wx.miniapp.bean.WxMaUpdatableMsg;
 import com.google.gson.JsonObject;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 /**
- * <pre>
  * 消息发送接口
- * </pre>
  *
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
  */
 public interface WxMaMsgService {
-  String KEFU_MESSAGE_SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/custom/send";
-  String TEMPLATE_MSG_SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send";
-  String SUBSCRIBE_MSG_SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send";
-  String UNIFORM_MSG_SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send";
-  String ACTIVITY_ID_CREATE_URL = "https://api.weixin.qq.com/cgi-bin/message/wxopen/activityid/create";
-  String UPDATABLE_MSG_SEND_URL = "https://api.weixin.qq.com/cgi-bin/message/wxopen/updatablemsg/send";
 
   /**
    * <pre>
@@ -31,20 +26,6 @@ public interface WxMaMsgService {
    * @throws WxErrorException .
    */
   boolean sendKefuMsg(WxMaKefuMessage message) throws WxErrorException;
-
-  /**
-   * <pre>
-   * 发送模板消息
-   * 详情请见: <a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/templateMessage.send.html">发送模板消息</a>
-   * 接口url格式：https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=ACCESS_TOKEN
-   * 小程序模板消息接口将于2020年1月10日下线，开发者可使用订阅消息功能
-   * </pre>
-   *
-   * @param templateMessage 模版消息
-   * @throws WxErrorException .
-   */
-  @Deprecated
-  void sendTemplateMsg(WxMaTemplateMessage templateMessage) throws WxErrorException;
 
   /**
    * <pre>

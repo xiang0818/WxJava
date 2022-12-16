@@ -1,6 +1,6 @@
 package me.chanjar.weixin.cp.bean.outxmlbuilder;
 
-import me.chanjar.weixin.cp.bean.WxCpXmlOutTextMessage;
+import me.chanjar.weixin.cp.bean.message.WxCpXmlOutTextMessage;
 
 /**
  * 文本消息builder
@@ -10,6 +10,12 @@ import me.chanjar.weixin.cp.bean.WxCpXmlOutTextMessage;
 public final class TextBuilder extends BaseBuilder<TextBuilder, WxCpXmlOutTextMessage> {
   private String content;
 
+  /**
+   * Content text builder.
+   *
+   * @param content the content
+   * @return the text builder
+   */
   public TextBuilder content(String content) {
     this.content = content;
     return this;

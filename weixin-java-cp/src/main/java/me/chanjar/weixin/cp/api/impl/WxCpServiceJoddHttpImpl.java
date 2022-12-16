@@ -3,10 +3,10 @@ package me.chanjar.weixin.cp.api.impl;
 import jodd.http.HttpConnectionProvider;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import jodd.http.JoddHttp;
 import jodd.http.ProxyInfo;
-import me.chanjar.weixin.common.WxType;
+import jodd.http.net.SocketHttpConnectionProvider;
 import me.chanjar.weixin.common.bean.WxAccessToken;
+import me.chanjar.weixin.common.enums.WxType;
 import me.chanjar.weixin.common.error.WxError;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.util.http.HttpType;
@@ -14,6 +14,8 @@ import me.chanjar.weixin.cp.config.WxCpConfigStorage;
 import me.chanjar.weixin.cp.constant.WxCpApiPathConsts;
 
 /**
+ * The type Wx cp service jodd http.
+ *
  * @author someone
  */
 public class WxCpServiceJoddHttpImpl extends BaseWxCpServiceImpl<HttpConnectionProvider, ProxyInfo> {
@@ -68,7 +70,7 @@ public class WxCpServiceJoddHttpImpl extends BaseWxCpServiceImpl<HttpConnectionP
         configStorage.getHttpProxyPort(), configStorage.getHttpProxyUsername(), configStorage.getHttpProxyPassword());
     }
 
-    httpClient = JoddHttp.httpConnectionProvider;
+    httpClient = new SocketHttpConnectionProvider();
   }
 
   @Override

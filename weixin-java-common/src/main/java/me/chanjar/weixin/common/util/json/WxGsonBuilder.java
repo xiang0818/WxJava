@@ -7,14 +7,15 @@ import me.chanjar.weixin.common.bean.WxNetCheckResult;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.error.WxError;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
+import java.util.Objects;
 
 /**
  * .
  * @author chanjarster
  */
 public class WxGsonBuilder {
-
   private static final GsonBuilder INSTANCE = new GsonBuilder();
+  private static volatile Gson GSON_INSTANCE;
 
   static {
     INSTANCE.disableHtmlEscaping();
@@ -27,7 +28,14 @@ public class WxGsonBuilder {
   }
 
   public static Gson create() {
-    return INSTANCE.create();
+    if (Objects.isNull(GSON_INSTANCE)) {
+      synchronized (INSTANCE) {
+        if (Objects.isNull(GSON_INSTANCE)) {
+          GSON_INSTANCE = INSTANCE.create();
+        }
+      }
+    }
+    return GSON_INSTANCE;
   }
 
 }

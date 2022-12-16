@@ -1,6 +1,6 @@
 package me.chanjar.weixin.common.util.http;
 
-import me.chanjar.weixin.common.WxType;
+import me.chanjar.weixin.common.enums.WxType;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 import java.io.IOException;
@@ -37,4 +37,6 @@ public interface RequestExecutor<T, E> {
    * @throws IOException      io异常
    */
   void execute(String uri, E data, ResponseHandler<T> handler, WxType wxType) throws WxErrorException, IOException;
+
+
 }

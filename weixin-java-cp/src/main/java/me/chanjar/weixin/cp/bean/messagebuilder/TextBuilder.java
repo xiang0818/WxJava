@@ -1,7 +1,7 @@
 package me.chanjar.weixin.cp.bean.messagebuilder;
 
 import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.cp.bean.WxCpMessage;
+import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 
 /**
  * 文本消息builder
@@ -14,10 +14,19 @@ import me.chanjar.weixin.cp.bean.WxCpMessage;
 public final class TextBuilder extends BaseBuilder<TextBuilder> {
   private String content;
 
+  /**
+   * Instantiates a new Text builder.
+   */
   public TextBuilder() {
     this.msgType = WxConsts.KefuMsgType.TEXT;
   }
 
+  /**
+   * Content text builder.
+   *
+   * @param content the content
+   * @return the text builder
+   */
   public TextBuilder content(String content) {
     this.content = content;
     return this;

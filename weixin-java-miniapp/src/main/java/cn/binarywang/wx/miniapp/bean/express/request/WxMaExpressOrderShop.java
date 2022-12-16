@@ -1,9 +1,12 @@
 package cn.binarywang.wx.miniapp.bean.express.request;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 商品信息对象
@@ -11,8 +14,9 @@ import java.io.Serializable;
  * @since 2019-11-26
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class WxMaExpressOrderShop implements Serializable {
-
   private static final long serialVersionUID = 7256509453502211830L;
 
   /**
@@ -51,5 +55,15 @@ public class WxMaExpressOrderShop implements Serializable {
    */
   @SerializedName("goods_count")
   private Integer goodsCount;
+
+  /**
+   * 商品详情列表
+   * <pre>
+   * 是否必填： 否
+   * 描述： 适配多商品场景，用以消息落地页展示。（新规范，新接入商家建议用此字段）
+   * </pre>
+   */
+  @SerializedName("detail_list")
+  private List<WxMaExpressOrderShopDetail> detailList;
 
 }

@@ -8,10 +8,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <pre>
  * 默认消息重复检查器.
  * 将每个消息id保存在内存里，每隔5秒清理已经过期的消息id，每个消息id的过期时间是15秒
+ * 替换类WxMessageInMemoryDuplicateCheckerSingleton
  * </pre>
  *
  * @author Daniel Qian
  */
+@Deprecated
 public class WxMessageInMemoryDuplicateChecker implements WxMessageDuplicateChecker {
 
   /**
@@ -61,23 +63,20 @@ public class WxMessageInMemoryDuplicateChecker implements WxMessageDuplicateChec
     if (this.backgroundProcessStarted.getAndSet(true)) {
       return;
     }
-    Thread t = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          while (true) {
-            Thread.sleep(WxMessageInMemoryDuplicateChecker.this.clearPeriod);
-            Long now = System.currentTimeMillis();
-            for (Map.Entry<String, Long> entry :
-                WxMessageInMemoryDuplicateChecker.this.msgId2Timestamp.entrySet()) {
-              if (now - entry.getValue() > WxMessageInMemoryDuplicateChecker.this.timeToLive) {
-                WxMessageInMemoryDuplicateChecker.this.msgId2Timestamp.entrySet().remove(entry);
-              }
+    Thread t = new Thread(() -> {
+      try {
+        while (true) {
+          Thread.sleep(WxMessageInMemoryDuplicateChecker.this.clearPeriod);
+          Long now = System.currentTimeMillis();
+          for (Map.Entry<String, Long> entry :
+              WxMessageInMemoryDuplicateChecker.this.msgId2Timestamp.entrySet()) {
+            if (now - entry.getValue() > WxMessageInMemoryDuplicateChecker.this.timeToLive) {
+              WxMessageInMemoryDuplicateChecker.this.msgId2Timestamp.entrySet().remove(entry);
             }
           }
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
         }
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
       }
     });
     t.setDaemon(true);

@@ -12,10 +12,11 @@ import java.util.List;
  * 微信小程序代码包提交审核(仅供第三方开发者代小程序调用)
  *
  * @author yqx
- * @date 2018/9/13
+ * created on  2018/9/13
  */
 @Data
 public class WxOpenMaSubmitAuditMessage implements Serializable {
+  private static final long serialVersionUID = 8881103449144288927L;
 
   /**
    * 提交审核项的一个列表（至少填写1项，至多填写5项）
@@ -27,7 +28,7 @@ public class WxOpenMaSubmitAuditMessage implements Serializable {
    * 预览信息（小程序页面截图和操作录屏）
    */
   @SerializedName("preview_info")
-  private List<WxOpenMaPreviewInfo> previewInfo;
+  private WxOpenMaPreviewInfo previewInfo;
 
   /**
    * 小程序版本说明和功能解释
@@ -46,4 +47,10 @@ public class WxOpenMaSubmitAuditMessage implements Serializable {
    */
   @SerializedName("feedback_stuff")
   private String feedbackStuff;
+
+  /**
+   * 用于声明是否不使用“代码中检测出但是未配置的隐私相关接口”
+   */
+  @SerializedName("privacy_api_not_use")
+  private Boolean privacyApiNotUse;
 }

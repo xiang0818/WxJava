@@ -1,9 +1,6 @@
 package com.github.binarywang.wxpay.service.impl;
 
 import com.github.binarywang.wxpay.bean.profitsharing.*;
-import com.github.binarywang.wxpay.bean.profitsharing.ProfitSharingRequest;
-import com.github.binarywang.wxpay.bean.profitsharing.Receiver;
-import com.github.binarywang.wxpay.bean.profitsharing.ReceiverList;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
@@ -101,6 +98,24 @@ public class ProfitSharingServiceImplTest {
     ProfitSharingQueryResult result = this.payService.getProfitSharingService().profitSharingQuery(request);
     this.logger.info(result.formatReceivers().toString());
     this.logger.info(result.toString());
+  }
+
+  @Test
+  public void testProfitSharingMerchantRatioQuery() throws WxPayException {
+    final String subMchId = "subMchid";
+    final ProfitSharingMerchantRatioQueryRequest request = new ProfitSharingMerchantRatioQueryRequest(subMchId);
+    final ProfitSharingMerchantRatioQueryResult result = payService.getProfitSharingService().profitSharingMerchantRatioQuery(request);
+    logger.info(result.toString());
+  }
+
+  @Test
+    public void testProfitSharingOrderAmountQuery() throws WxPayException {
+    final String transactionId = "4200000916202012281633853127";
+    final ProfitSharingOrderAmountQueryRequest request = ProfitSharingOrderAmountQueryRequest.newBuilder()
+      .transactionId(transactionId)
+      .build();
+    final ProfitSharingOrderAmountQueryResult result = payService.getProfitSharingService().profitSharingOrderAmountQuery(request);
+    logger.info(result.toString());
   }
 
   @Test

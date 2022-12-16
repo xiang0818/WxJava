@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author keungtung.
- * @date 16/12/2016
+ * created on  16/12/2016
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -28,12 +28,12 @@ public class WxDeviceBindDeviceResult extends AbstractDeviceBean {
   }
 
   @Data
-  private class Device {
+  public static class Device {
     @SerializedName("device_type")
     private String deviceType;
+
     @SerializedName("device_id")
     private String deviceId;
-
   }
 
 }

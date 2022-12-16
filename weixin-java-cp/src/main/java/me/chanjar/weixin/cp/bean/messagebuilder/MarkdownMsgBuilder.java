@@ -1,7 +1,7 @@
 package me.chanjar.weixin.cp.bean.messagebuilder;
 
 import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.cp.bean.WxCpMessage;
+import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 
 /**
  * <pre>
@@ -14,10 +14,19 @@ import me.chanjar.weixin.cp.bean.WxCpMessage;
 public class MarkdownMsgBuilder extends BaseBuilder<MarkdownMsgBuilder> {
   private String content;
 
+  /**
+   * Instantiates a new Markdown msg builder.
+   */
   public MarkdownMsgBuilder() {
     this.msgType = WxConsts.KefuMsgType.MARKDOWN;
   }
 
+  /**
+   * Content markdown msg builder.
+   *
+   * @param content the content
+   * @return the markdown msg builder
+   */
   public MarkdownMsgBuilder content(String content) {
     this.content = content;
     return this;

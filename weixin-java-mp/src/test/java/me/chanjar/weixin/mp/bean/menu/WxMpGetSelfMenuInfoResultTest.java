@@ -5,11 +5,10 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.*;
 
 /**
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
- * @date 2019-08-05
+ * created on  2019-08-05
  */
 public class WxMpGetSelfMenuInfoResultTest {
 

@@ -3,11 +3,13 @@ package me.chanjar.weixin.mp.bean.template;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 模版消息行业枚举.
  *
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
- * @date 2019-10-18
+ * created on  2019-10-18
  */
 @Getter
 @AllArgsConstructor
@@ -41,9 +43,9 @@ public enum WxMpTemplateIndustryEnum {
    */
   BANK("金融业", "银行", 7),
   /**
-   * 金融业 - 基金|理财|信托
+   * 金融业 - 证券|基金|理财|信托（实际是这个）
    */
-  FUND("金融业", "基金|理财|信托", 8),
+  FUND("金融业", "证券基金理财信托", 8),
   /**
    * 金融业 - 保险
    */
@@ -93,9 +95,9 @@ public enum WxMpTemplateIndustryEnum {
    */
   MUSEUM("政府与公共事业", "博物馆", 20),
   /**
-   * 政府与公共事业 - 公共事业|非盈利机构
+   * 政府与公共事业 - 公共事业非盈利机构
    */
-  PUBLIC_WORKS_NONPROFIT("政府与公共事业", "公共事业|非盈利机构", 21),
+  PUBLIC_WORKS_NONPROFIT("政府与公共事业", "公共事业非盈利机构", 21),
   /**
    * 医药护理 - 医药医疗
    */
@@ -125,7 +127,7 @@ public enum WxMpTemplateIndustryEnum {
    */
   THE_PLANE_RELATED("交通工具", "飞机相关", 28),
   /**
-   * 房地产 - 建筑
+   * 房地产 - 房地产|建筑（实际上是这个）
    */
   ARCHITECTURE("房地产", "建筑", 29),
   /**
@@ -153,9 +155,9 @@ public enum WxMpTemplateIndustryEnum {
    */
   AUTHENTICATION("商业服务", "认证", 35),
   /**
-   * 商业服务 - 会计|审计
+   * 商业服务 - 审计
    */
-  AUDIT("商业服务", "会计|审计", 36),
+  AUDIT("商业服务", "审计", 36),
   /**
    * 文体娱乐 - 传媒
    */
@@ -173,9 +175,9 @@ public enum WxMpTemplateIndustryEnum {
    */
   PRINTING("印刷", "印刷", 40),
   /**
-   * 其它 - 其它
+   * 其他 - 其他
    */
-  OTHER("其它", "其它", 41);
+  OTHER("其他", "其他", 41);
 
   /**
    * 主行业（一级行业）
@@ -193,17 +195,15 @@ public enum WxMpTemplateIndustryEnum {
   /**
    * 查找行业
    *
-   * @param industry 二级行业名称
-   * @return .
+   * @param firstClass  主行业名称
+   * @param secondClass 副行业名称
+   * @return 如果找不到, 返回null
    */
-  public static WxMpTemplateIndustryEnum findBySecondary(String industry) {
-    for (WxMpTemplateIndustryEnum industryEnum : WxMpTemplateIndustryEnum.values()) {
-      if (industryEnum.secondClass.equals(industry)) {
-        return industryEnum;
-      }
-    }
-
-    return null;
+  public static WxMpTemplateIndustryEnum findByClass(String firstClass, String secondClass) {
+    return Arrays.stream(WxMpTemplateIndustryEnum.values())
+      .filter(industryEnum -> industryEnum.firstClass.equals(firstClass)
+        && industryEnum.secondClass.contains(secondClass))
+      .findFirst().orElse(null);
   }
 
   /**
@@ -213,12 +213,8 @@ public enum WxMpTemplateIndustryEnum {
    * @return .
    */
   public static WxMpTemplateIndustryEnum findByCode(int code) {
-    for (WxMpTemplateIndustryEnum industryEnum : WxMpTemplateIndustryEnum.values()) {
-      if (industryEnum.code == code) {
-        return industryEnum;
-      }
-    }
-
-    return null;
+    return Arrays.stream(WxMpTemplateIndustryEnum.values())
+      .filter(industryEnum -> industryEnum.code == code)
+      .findFirst().orElse(null);
   }
 }
