@@ -63,6 +63,13 @@ public class WxWithholdNotifyResult extends BaseWxPayResult {
   private String isSubscribe;
 
   /**
+   * 是否关注子商户关联的公众号
+   * 非必传
+   */
+  @XStreamAlias("sub_is_subscribe")
+  private String subIsSubscribe;
+
+  /**
    * 付款银行
    */
   @XStreamAlias("bank_type")
@@ -191,6 +198,7 @@ public class WxWithholdNotifyResult extends BaseWxPayResult {
     deviceInfo = readXmlString(d, "device_info");
     openId = readXmlString(d, "openid");
     isSubscribe = readXmlString(d, "is_subscribe");
+    subIsSubscribe = readXmlString(d, "sub_is_subscribe");
     subOpenId = readXmlString(d, "sub_openid");
     bankType = readXmlString(d, "bank_type");
     totalFee = readXmlInteger(d, "total_fee");
@@ -216,7 +224,7 @@ public class WxWithholdNotifyResult extends BaseWxPayResult {
     if (this.couponCount == null || this.couponCount == 0) {
       return;
     }
-    this.couponList = new ArrayList(couponCount);
+    this.couponList = new ArrayList<>(couponCount);
     for (int i = 0; i < this.couponCount; i++) {
       WxPayOrderNotifyCoupon coupon = new WxPayOrderNotifyCoupon();
       coupon.setCouponId(this.getXmlValue("xml/coupon_id_" + i));

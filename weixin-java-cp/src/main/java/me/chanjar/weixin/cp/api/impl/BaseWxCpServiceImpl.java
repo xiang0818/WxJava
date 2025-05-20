@@ -5,12 +5,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.common.bean.CommonUploadParam;
 import me.chanjar.weixin.common.bean.ToJson;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.enums.WxType;
 import me.chanjar.weixin.common.error.WxError;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.error.WxRuntimeException;
+import me.chanjar.weixin.common.executor.CommonUploadRequestExecutor;
 import me.chanjar.weixin.common.session.StandardSessionManager;
 import me.chanjar.weixin.common.session.WxSession;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -70,6 +72,9 @@ public abstract class BaseWxCpServiceImpl<H, P> implements WxCpService, RequestH
 
   private WxCpExportService exportService = new WxCpExportServiceImpl(this);
 
+  private final WxCpMeetingService meetingService = new WxCpMeetingServiceImpl(this);
+  private final WxCpCorpGroupService corpGroupService = new WxCpCorpGroupServiceImpl(this);
+
   /**
    * 全局的是否正在刷新access token的锁.
    */
@@ -105,7 +110,7 @@ public abstract class BaseWxCpServiceImpl<H, P> implements WxCpService, RequestH
       return SHA1.gen(this.configStorage.getToken(), timestamp, nonce, data)
         .equals(msgSignature);
     } catch (Exception e) {
-      log.error("Checking signature failed, and the reason is :" + e.getMessage());
+      log.error("Checking signature failed, and the reason is :{}", e.getMessage());
       return false;
     }
   }
@@ -224,7 +229,23 @@ public abstract class BaseWxCpServiceImpl<H, P> implements WxCpService, RequestH
 
   @Override
   public String[] getCallbackIp() throws WxErrorException {
-    String responseContent = get(this.configStorage.getApiUrl(GET_CALLBACK_IP), null);
+    return getIp(GET_CALLBACK_IP);
+  }
+
+  @Override
+  public String[] getApiDomainIp() throws WxErrorException {
+    return getIp(GET_API_DOMAIN_IP);
+  }
+
+  /**
+   * 获取 IP
+   *
+   * @param suffixUrl 接口URL 后缀
+   * @return 返回结果
+   * @throws WxErrorException 异常信息
+   */
+  private String[] getIp(String suffixUrl) throws WxErrorException {
+    String responseContent = get(this.configStorage.getApiUrl(suffixUrl), null);
     JsonObject tmpJsonObject = GsonParser.parse(responseContent);
     JsonArray jsonArray = tmpJsonObject.get("ip_list").getAsJsonArray();
     String[] ips = new String[jsonArray.size()];
@@ -261,6 +282,12 @@ public abstract class BaseWxCpServiceImpl<H, P> implements WxCpService, RequestH
   @Override
   public String post(String url, ToJson obj) throws WxErrorException {
     return this.post(url, obj.toJson());
+  }
+
+  @Override
+  public String upload(String url, CommonUploadParam param) throws WxErrorException {
+    RequestExecutor<String, CommonUploadParam> executor = CommonUploadRequestExecutor.create(getRequestHttp());
+    return this.execute(executor, url, param);
   }
 
   @Override
@@ -664,5 +691,15 @@ public abstract class BaseWxCpServiceImpl<H, P> implements WxCpService, RequestH
   @Override
   public void setExportService(WxCpExportService exportService) {
     this.exportService = exportService;
+  }
+
+  @Override
+  public WxCpMeetingService getMeetingService() {
+    return meetingService;
+  }
+
+  @Override
+  public WxCpCorpGroupService getCorpGroupService() {
+    return corpGroupService;
   }
 }

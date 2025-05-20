@@ -66,6 +66,17 @@ public class TransferBatchesRequest implements Serializable {
   @SerializedName("transfer_detail_list")
   private List<TransferDetail> transferDetailList;
 
+  /**
+   * 转账场景ID
+   */
+  @SerializedName("transfer_scene_id")
+  private String transferSceneId;
+
+  /**
+   * 异步接收微信支付结果通知的回调地址，通知url必须为公网可访问的url，必须为https，不能携带参数
+   */
+  @SerializedName("notify_url")
+  private String notifyUrl;
 
   @Data
   @Builder(builderMethodName = "newBuilder")

@@ -141,6 +141,18 @@ public class WxOpenFastMaServiceImpl extends WxMaServiceImpl implements WxOpenFa
     return WxOpenGsonBuilder.create().fromJson(response, WxOpenResult.class);
   }
 
+  /**
+   * 获取订单页Path信息
+   *
+   * @param infoType 0:线上版，1:审核版
+   * @return 订单页Path信息
+   * @throws WxErrorException .
+   */
+  @Override
+  public WxOpenMaGetOrderPathResult getOrderPathInfo(int infoType) throws WxErrorException {
+    throw new UnsupportedOperationException();
+  }
+
   private JsonArray toJsonArray(List<String> strList) {
     JsonArray jsonArray = new JsonArray();
     if (strList != null && !strList.isEmpty()) {

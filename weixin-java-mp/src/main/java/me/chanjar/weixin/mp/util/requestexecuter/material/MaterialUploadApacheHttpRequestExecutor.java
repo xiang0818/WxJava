@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by ecoolper on 2017/5/5.
  */
 public class MaterialUploadApacheHttpRequestExecutor extends MaterialUploadRequestExecutor<CloseableHttpClient, HttpHost> {
-  public MaterialUploadApacheHttpRequestExecutor(RequestHttp requestHttp) {
+  public MaterialUploadApacheHttpRequestExecutor(RequestHttp<CloseableHttpClient, HttpHost> requestHttp) {
     super(requestHttp);
   }
 
@@ -58,9 +58,7 @@ public class MaterialUploadApacheHttpRequestExecutor extends MaterialUploadReque
       multipartEntityBuilder.addPart("description",
         new StringBody(WxGsonBuilder.create().toJson(form), ContentType.create("text/plain", Consts.UTF_8)));
     }
-
     httpPost.setEntity(multipartEntityBuilder.build());
-    httpPost.setHeader("Content-Type", ContentType.MULTIPART_FORM_DATA.toString());
 
     try (CloseableHttpResponse response = requestHttp.getRequestHttpClient().execute(httpPost)) {
       String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);

@@ -2,6 +2,7 @@ package me.chanjar.weixin.cp.api;
 
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.article.NewArticle;
+import me.chanjar.weixin.cp.bean.message.WxCpGroupRobotMessage;
 
 import java.util.List;
 
@@ -96,4 +97,22 @@ public interface WxCpGroupRobotService {
    * @throws WxErrorException 异常
    */
   void sendFile(String webhookUrl, String mediaId) throws WxErrorException;
+
+  /**
+   * 发送文件类型的消息
+   *
+   * @param webhookUrl webhook地址
+   * @param mediaId    语音文件id
+   * @throws WxErrorException 异常
+   */
+  void sendVoice(String webhookUrl, String mediaId) throws WxErrorException;
+
+  /**
+   * 发送模板卡片消息
+   * @param webhookUrl
+   * @param wxCpGroupRobotMessage
+   * @throws WxErrorException
+   */
+  void sendTemplateCardMessage(String webhookUrl, WxCpGroupRobotMessage wxCpGroupRobotMessage) throws WxErrorException;
+
 }

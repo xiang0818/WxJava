@@ -31,7 +31,7 @@ public class WxMaMessage implements Serializable {
   private static final long serialVersionUID = -3586245291677274914L;
 
   /**
-   * 使用dom4j解析的存放所有xml属性和值的map.
+   * 使用dom4j解析的存放所有xml或json属性和值的map.
    */
   private Map<String, Object> allFieldsMap;
 
@@ -287,6 +287,7 @@ public class WxMaMessage implements Serializable {
       }
       message.setUselessMsg(null);
     }
+    message.setAllFieldsMap(WxMaGsonBuilder.create().fromJson(json, Map.class));
     return message;
   }
 
@@ -315,6 +316,30 @@ public class WxMaMessage implements Serializable {
 
   public String toJson() {
     return WxMaGsonBuilder.create().toJson(this);
+  }
+
+  public String getAppid() {
+    return appid;
+  }
+
+  public void setAppid(String appid) {
+    this.appid = appid;
+  }
+
+  public String getAppID() {
+    return appID;
+  }
+
+  public void setAppID(String appID) {
+    this.appID = appID;
+  }
+
+  public String getAppId() {
+    return appId;
+  }
+
+  public void setAppId(String appId) {
+    this.appId = appId;
   }
 
 }

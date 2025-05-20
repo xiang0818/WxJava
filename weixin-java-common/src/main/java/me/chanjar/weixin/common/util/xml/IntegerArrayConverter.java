@@ -24,6 +24,11 @@ public class IntegerArrayConverter extends StringConverter {
 
   @Override
   public Object fromString(String str) {
+
+    if (str == null || str.isEmpty()) {
+      return null;
+    }
+
     final Iterable<String> iterable = Splitter.on(",").split(str);
     final String[] strings = Iterables.toArray(iterable, String.class);
     Integer[] result = new Integer[strings.length];

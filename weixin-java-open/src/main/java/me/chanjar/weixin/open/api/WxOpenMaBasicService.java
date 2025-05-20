@@ -69,6 +69,11 @@ public interface WxOpenMaBasicService {
    */
   String OPEN_MODIFY_CATEGORY = "https://api.weixin.qq.com/cgi-bin/wxopen/modifycategory";
 
+  /**
+   * 获取订单页path信息
+   */
+  String OPEN_GET_ORDER_PATH_INFO = "https://api.weixin.qq.com/wxa/security/getorderpathinfo";
+
 
   /**
    * 1.获取小程序的信息
@@ -196,4 +201,13 @@ public interface WxOpenMaBasicService {
    * @throws WxErrorException .
    */
   WxOpenResult modifyCategory(WxFastMaCategory category) throws WxErrorException;
+
+  /**
+   * 获取订单页Path信息
+   *
+   * @param infoType 0:线上版，1:审核版
+   * @return 订单页Path信息
+   * @throws WxErrorException .
+   */
+  WxOpenMaGetOrderPathResult getOrderPathInfo(int infoType) throws WxErrorException;
 }

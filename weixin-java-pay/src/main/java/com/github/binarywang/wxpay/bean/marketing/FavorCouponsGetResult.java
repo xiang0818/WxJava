@@ -143,6 +143,15 @@ public class FavorCouponsGetResult implements Serializable {
   private Boolean singleitem;
 
   /**
+   * 商户单据号
+   * <p>
+   * 商户此次发放凭据号（格式：商户id+日期+流水号），可包含英文字母，数字，|，_，*，-等内容，不允许出现其他不合法符号，商户侧需保持唯一性。
+   * 示例值: 89560002019101000121
+   */
+  @SerializedName("out_request_no")
+  private String outRequestNo;
+
+  /**
    * 满减券信息
    * <p>
    * 普通满减券面额、门槛信息。
@@ -162,7 +171,7 @@ public class FavorCouponsGetResult implements Serializable {
      * 示例值：100
      */
     @SerializedName(value = "single_price_max")
-    private Integer singlePriceMax;
+    private Long singlePriceMax;
 
     /**
      * 减至后的优惠单价
@@ -171,7 +180,7 @@ public class FavorCouponsGetResult implements Serializable {
      * 示例值：100
      */
     @SerializedName(value = "cut_to_price")
-    private Integer cutToPrice;
+    private Long cutToPrice;
   }
 
   @Data

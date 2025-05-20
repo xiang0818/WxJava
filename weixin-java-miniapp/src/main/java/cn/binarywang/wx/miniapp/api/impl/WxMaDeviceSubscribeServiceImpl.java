@@ -4,9 +4,9 @@ import cn.binarywang.wx.miniapp.api.WxMaDeviceSubscribeService;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.device.WxMaDeviceSubscribeMessageRequest;
 import cn.binarywang.wx.miniapp.bean.device.WxMaDeviceTicketRequest;
-import cn.binarywang.wx.miniapp.constant.WxMaConstants;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.enums.WxType;
 import me.chanjar.weixin.common.error.WxError;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -32,7 +32,7 @@ public class WxMaDeviceSubscribeServiceImpl implements WxMaDeviceSubscribeServic
   public String getSnTicket(WxMaDeviceTicketRequest deviceTicketRequest) throws WxErrorException {
     String responseContent = this.service.post(GET_SN_TICKET_URL, deviceTicketRequest.toJson());
     JsonObject jsonObject = GsonParser.parse(responseContent);
-    if (jsonObject.get(WxMaConstants.ERRCODE).getAsInt() != 0) {
+    if (jsonObject.get(WxConsts.ERR_CODE).getAsInt() != 0) {
       throw new WxErrorException(WxError.fromJson(responseContent, WxType.MiniApp));
     }
     String snTicket = jsonObject.get("sn_ticket").getAsString();
@@ -43,7 +43,7 @@ public class WxMaDeviceSubscribeServiceImpl implements WxMaDeviceSubscribeServic
   public void sendDeviceSubscribeMsg(WxMaDeviceSubscribeMessageRequest deviceSubscribeMessageRequest) throws WxErrorException {
     String responseContent = this.service.post(SEND_DEVICE_SUBSCRIBE_MSG_URL, deviceSubscribeMessageRequest.toJson());
     JsonObject jsonObject = GsonParser.parse(responseContent);
-    if (jsonObject.get(WxMaConstants.ERRCODE).getAsInt() != 0) {
+    if (jsonObject.get(WxConsts.ERR_CODE).getAsInt() != 0) {
       throw new WxErrorException(WxError.fromJson(responseContent, WxType.MiniApp));
     }
   }
